@@ -1,0 +1,707 @@
+/* ============================================
+   SHOWCASE SECTION — 个人展示页
+   灵感来源：JIEJOE.com 暗色卡片组合布局
+   3 个全屏展示页，交替左右排列
+
+   配色：与玫瑰主题一致（红/粉/紫）
+   ============================================ */
+
+/* --- 每页 section（紧凑布局，不再强制全屏） --- */
+.showcase-section {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 68vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 5vw;
+  background: transparent;
+  overflow: hidden;
+}
+
+/* 奇偶交替背景差 */
+.showcase-section:nth-child(even) {
+  background: transparent;
+}
+
+/* --- 内容栏：非对称网格布局 (CSS Grid) --- */
+.showcase-content {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2rem;
+  max-width: 1300px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  align-items: center;
+}
+
+/* 奇数行排列：文字左侧，图片偏右侧大留白 */
+.showcase-section:nth-child(odd) .showcase-text {
+  grid-column: 1 / 6;
+  grid-row: 1;
+}
+.showcase-section:nth-child(odd) .showcase-visual {
+  grid-column: 8 / 13;
+  grid-row: 1;
+}
+
+/* 偶数行反向排列：图片左侧，文字偏右侧 */
+.showcase-section:nth-child(even) .showcase-visual {
+  grid-column: 1 / 7;
+  grid-row: 1;
+}
+.showcase-section:nth-child(even) .showcase-text {
+  grid-column: 8 / 13;
+  grid-row: 1;
+}
+
+.showcase-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: fit-content; /* 修复子容器被默认拉伸导致物理中心偏移的问题 */
+}
+
+.showcase-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(244, 63, 94, 0.7);
+  margin-bottom: 0.75rem;
+}
+
+.showcase-title {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+/* 标题里的彩色关键词 */
+.showcase-title .accent {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.showcase-title .outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.5);
+}
+
+.showcase-desc {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.7;
+  margin-top: 1.5rem;
+  max-width: 420px;
+}
+
+/* 如果有标签列表 */
+.showcase-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 1.25rem;
+}
+
+.showcase-tag {
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(244, 63, 94, 0.25);
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(244, 63, 94, 0.06);
+  transition: all 0.3s ease;
+}
+
+.showcase-tag:hover {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: rgba(244, 63, 94, 0.5);
+  color: #fff;
+}
+
+
+/* --- 图片侧 --- */
+.showcase-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: fit-content; /* 防止高度拉伸到 100%，使 align-items: center 完美生效 */
+}
+
+/* 图片卡片 — 带阴影边框（适应网格尺寸） */
+.showcase-card {
+  position: relative;
+  width: 100%;
+  max-width: 400px; /* 原为 280px，放宽一些以填满网格空间 */
+  border-radius: 16px;
+  overflow: hidden;
+  background: #111118;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(244, 63, 94, 0.04);
+  /* Use transform for animation; will-change signals GPU offload */
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.5s ease;
+  will-change: transform;
+  /* Hardware acceleration trigger */
+  transform: translate3d(0, 0, 0); 
+}
+
+/* Vanilla-tilt will handle hover, we keep a fallback just in case or disable it */
+/* Note: Vanilla tilt overwrites transform with inline style, so we don't strictly need a CSS hover for transform here, but we will keep box-shadow */
+@media (hover: hover) {
+  .showcase-card:hover {
+    box-shadow:
+      0 32px 80px rgba(0, 0, 0, 0.6),
+      0 0 60px rgba(244, 63, 94, 0.1);
+  }
+}
+
+.showcase-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+/* 卡片底部信息 */
+.showcase-card-info {
+  padding: 16px 20px;
+  background: rgba(10, 10, 15, 0.9);
+}
+
+.showcase-card-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin-bottom: 4px;
+}
+
+.showcase-card-sub {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+
+/* --- 背景大编号 --- */
+.showcase-number {
+  position: absolute;
+  font-size: clamp(8rem, 22vw, 18rem);
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.04);
+  letter-spacing: -0.05em;
+  z-index: 1;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* 编号位置 */
+.showcase-section:nth-child(odd) .showcase-number {
+  left: 5vw;
+  bottom: 5vh;
+}
+
+.showcase-section:nth-child(even) .showcase-number {
+  right: 5vw;
+  bottom: 5vh;
+}
+
+
+/* --- Scroll Reveal 动画 优化为 3d --- */
+.showcase-text,
+.showcase-visual {
+  opacity: 0;
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.showcase-section:nth-child(odd) .showcase-text {
+  transform: translate3d(-60px, 0, 0);
+}
+.showcase-section:nth-child(odd) .showcase-visual {
+  transform: translate3d(60px, 0, 0);
+}
+.showcase-section:nth-child(even) .showcase-text {
+  transform: translate3d(60px, 0, 0);
+}
+.showcase-section:nth-child(even) .showcase-visual {
+  transform: translate3d(-60px, 0, 0);
+}
+
+/* 已显示状态 */
+.showcase-section.showcase--visible .showcase-text,
+.showcase-section.showcase--visible .showcase-visual {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* 编号也渐入 */
+.showcase-number {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 1s ease 0.3s, transform 1s ease 0.3s;
+}
+
+.showcase-section.showcase--visible .showcase-number {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- About / 学习方向：第二屏承接首页入口 --- */
+.about-section {
+  min-height: 86vh;
+  padding: 5.5rem 5vw 3.25rem;
+  background:
+    radial-gradient(circle at 24% 34%, rgba(190, 24, 93, 0.06) 0%, transparent 42%),
+    radial-gradient(circle at 78% 58%, rgba(99, 102, 241, 0.03) 0%, transparent 36%),
+    transparent;
+}
+
+.about-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 20% 44%, rgba(244, 63, 94, 0.07) 0%, transparent 48%),
+    linear-gradient(90deg, rgba(8, 8, 14, 0.14) 0%, rgba(8, 8, 14, 0.03) 48%, rgba(8, 8, 14, 0.1) 100%),
+    radial-gradient(ellipse at 50% 0%, rgba(255, 228, 230, 0.035) 0%, transparent 58%),
+    radial-gradient(ellipse at 50% 100%, rgba(28, 18, 28, 0.14) 0%, transparent 58%);
+  z-index: 0;
+}
+
+.about-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(10, 10, 15, 0.48) 0%, rgba(10, 10, 15, 0.16) 10%, transparent 28%),
+    linear-gradient(to top, rgba(16, 13, 20, 0.34) 0%, rgba(16, 13, 20, 0.12) 16%, transparent 36%);
+  z-index: 0;
+}
+
+.about-content {
+  gap: 3rem;
+}
+
+.about-section .showcase-number {
+  color: rgba(255, 255, 255, 0.015);
+  -webkit-text-stroke-color: rgba(255, 228, 230, 0.045);
+}
+
+.about-section .showcase-text {
+  grid-column: 1 / 6;
+}
+
+.about-section .showcase-visual {
+  grid-column: 7 / 13;
+}
+
+.about-title {
+  margin-bottom: 1rem;
+}
+
+.about-title .outline {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.34);
+}
+
+.about-title .accent {
+  background: linear-gradient(135deg, #f8fafc 0%, #fb7185 42%, #9ca3af 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.about-desc {
+  max-width: 560px;
+  font-size: 0.95rem;
+  line-height: 1.78;
+  color: #d8d8d8;
+}
+
+.about-media {
+  min-height: 430px;
+  display: grid;
+  grid-template-columns: 1fr 0.72fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+.about-photo {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 228, 230, 0.1);
+  background: rgba(16, 14, 22, 0.42);
+  box-shadow: 0 22px 58px rgba(0, 0, 0, 0.34), 0 0 44px rgba(190, 24, 93, 0.1);
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.55s ease, border-color 0.55s ease;
+}
+
+.about-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(8, 8, 14, 0.18), rgba(8, 8, 14, 0.62)),
+    linear-gradient(135deg, rgba(244, 63, 94, 0.12), transparent 44%),
+    radial-gradient(circle at 50% 50%, transparent 44%, rgba(0, 0, 0, 0.22) 100%);
+}
+
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.78) brightness(0.72) contrast(1.02);
+  transform: scale(1.02);
+}
+
+.about-photo figcaption {
+  position: absolute;
+  left: 1rem;
+  bottom: 0.9rem;
+  z-index: 1;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.about-photo--main {
+  height: 390px;
+}
+
+.about-photo--small {
+  height: 260px;
+  margin-top: 5rem;
+}
+
+.about-photo:hover {
+  transform: translateY(-4px);
+  border-color: rgba(251, 113, 133, 0.22);
+  box-shadow: 0 28px 68px rgba(0, 0, 0, 0.38), 0 0 48px rgba(190, 24, 93, 0.13);
+}
+
+/* --- Cinema / 电影偏好：安静的影像审美 --- */
+.cinema-section {
+  min-height: 76vh;
+  padding: 3.25rem 5vw 4.25rem;
+  margin-top: -1px;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(190, 24, 93, 0.05) 0%, transparent 36%),
+    radial-gradient(circle at 76% 58%, rgba(99, 102, 241, 0.025) 0%, transparent 34%),
+    transparent;
+}
+
+.cinema-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(16, 13, 20, 0.22) 0%, transparent 28%, rgba(8, 8, 14, 0.12) 100%),
+    linear-gradient(90deg, rgba(8, 8, 14, 0.12) 0%, rgba(8, 8, 14, 0.03) 50%, rgba(8, 8, 14, 0.16) 100%),
+    radial-gradient(ellipse at 50% 0%, rgba(255, 228, 230, 0.035) 0%, transparent 56%),
+    radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, 0.1) 0%, transparent 58%);
+}
+
+.cinema-content {
+  max-width: 1120px;
+  gap: 2.75rem;
+}
+
+.cinema-section .showcase-number {
+  color: rgba(255, 255, 255, 0.014);
+  -webkit-text-stroke-color: rgba(255, 228, 230, 0.04);
+}
+
+.cinema-section .showcase-visual {
+  grid-column: 1 / 6;
+  align-self: center;
+}
+
+.cinema-section .showcase-text {
+  grid-column: 7 / 13;
+  align-self: center;
+}
+
+.cinema-title {
+  font-size: clamp(2rem, 4vw, 3.35rem);
+  font-weight: 750;
+  letter-spacing: 0;
+}
+
+.cinema-title .outline {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.34);
+}
+
+.cinema-title .accent {
+  background: linear-gradient(135deg, #f8fafc 0%, #fb7185 44%, #9ca3af 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cinema-desc {
+  max-width: 470px;
+  font-size: 0.95rem;
+  line-height: 1.78;
+  color: #d8d8d8;
+}
+
+.cinema-tags .showcase-tag {
+  border-color: rgba(244, 83, 108, 0.28);
+  color: rgba(216, 216, 216, 0.78);
+  background: rgba(80, 12, 28, 0.1);
+}
+
+.cinema-tags .showcase-tag:hover {
+  border-color: rgba(244, 83, 108, 0.46);
+  background: rgba(120, 20, 44, 0.16);
+}
+
+.cinema-card {
+  position: relative;
+  width: min(100%, 340px);
+  max-width: 340px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 228, 230, 0.1);
+  background: rgba(16, 14, 22, 0.42);
+  box-shadow: 0 22px 58px rgba(0, 0, 0, 0.34), 0 0 44px rgba(190, 24, 93, 0.08);
+  transition: transform 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
+  will-change: transform;
+}
+
+.cinema-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(8, 8, 14, 0.1), rgba(8, 8, 14, 0.34)),
+    radial-gradient(circle at 24% 12%, rgba(244, 63, 94, 0.11), transparent 42%);
+  z-index: 3;
+}
+
+.cinema-card .showcase-anim-wrap {
+  background: #08080d;
+}
+
+.cinema-card .showcase-anim-wrap .anim-img {
+  object-fit: contain;
+  background: #08080d;
+}
+
+.cinema-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  filter: saturate(0.82) brightness(0.78) contrast(1.03);
+}
+
+.cinema-card .showcase-card-info {
+  position: relative;
+  z-index: 4;
+  padding: 13px 16px;
+  background: rgba(12, 11, 18, 0.82);
+}
+
+.cinema-card .showcase-card-title {
+  color: rgba(255, 255, 255, 0.86);
+  font-weight: 600;
+}
+
+.cinema-card .showcase-card-sub {
+  color: rgba(156, 163, 175, 0.66);
+}
+
+@media (hover: hover) {
+  .cinema-card:hover {
+    transform: translateY(-4px) translate3d(0, 0, 0);
+    border-color: rgba(251, 113, 133, 0.22);
+    box-shadow: 0 28px 68px rgba(0, 0, 0, 0.38), 0 0 48px rgba(190, 24, 93, 0.11);
+  }
+}
+
+
+/* --- 响应式 退化处理 --- */
+@media (max-width: 992px) {
+  /* 退化为单列流式布局 */
+  .showcase-content {
+    display: flex;
+    flex-direction: column !important;
+    text-align: center;
+    gap: 3rem;
+  }
+  
+  .showcase-section:nth-child(odd) .showcase-text,
+  .showcase-section:nth-child(odd) .showcase-visual,
+  .showcase-section:nth-child(even) .showcase-text,
+  .showcase-section:nth-child(even) .showcase-visual {
+    margin-top: 0; /* 清除网格排版的纵向错位 */
+  }
+
+  .showcase-desc {
+    max-width: 100%;
+  }
+
+  .showcase-tags {
+    justify-content: center;
+  }
+
+  .showcase-card {
+    max-width: 320px; /* 恢复居中紧凑 */
+    margin: 0 auto;
+    transform: translate3d(0, 0, 0) !important; /* 避免手机上异常位移 */
+  }
+
+  .showcase-number {
+    font-size: 6rem;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%);
+  }
+
+  .showcase-section.showcase--visible .showcase-number {
+    transform: translateX(-50%);
+  }
+
+  .about-section {
+    min-height: auto;
+    padding: 4.75rem 1.25rem 3.25rem;
+  }
+
+  .about-section .showcase-text,
+  .about-section .showcase-visual {
+    width: 100%;
+  }
+
+  .about-text {
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .about-desc {
+    max-width: 100%;
+    font-size: 0.92rem;
+  }
+
+  .about-media {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .about-photo--main,
+  .about-photo--small {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    margin-top: 0;
+  }
+
+  .cinema-section {
+    min-height: auto;
+    padding: 3.75rem 1.25rem 4.5rem;
+    margin-top: 0;
+  }
+
+  .cinema-text {
+    text-align: left;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .cinema-desc {
+    max-width: 100%;
+    font-size: 0.92rem;
+  }
+
+  .cinema-tags {
+    justify-content: flex-start;
+  }
+
+  .cinema-card {
+    max-width: 340px;
+  }
+}
+
+/* 手机端触控: 解除非必要动画 */
+@media (hover: none) {
+  .showcase-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  /* 手机端点击时下压效果替代 3D tilt */
+  .showcase-card:active {
+    transform: scale(0.98) translate3d(0, 0, 0) !important;
+  }
+}
+
+/* ==================================
+   AE-STYLE ANIMATION FOR SHOWCASES
+   取代 Lottie 库的纯原生无缝轮播特效
+   ================================== */
+.showcase-anim-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background-color: #060609;
+}
+
+.showcase-anim-wrap .anim-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform, opacity;
+  opacity: 0;
+}
+
+.showcase-anim-wrap .anim-img-1 {
+  /* 调整动画周期控制轮播速度，10秒一个完整的淡入放大淡出周期 */
+  animation: aeZoomFade 12s infinite linear;
+  z-index: 2;
+}
+
+.showcase-anim-wrap .anim-img-2 {
+  animation: aeZoomFade 12s infinite linear;
+  animation-delay: 6s; /* 完美的交叉淡入淡出 */
+  z-index: 1;
+}
+
+/* 
+  AE 交错淡入淡出 & Ken Burns 缓慢呼吸伸缩
+  0-5%: 快速淡入并开始拉伸
+  5-50%: 纯净展现时刻，缓慢持续变大
+  50-60%: 开始淡出，但依然在变大（形成纵深感）
+*/
+@keyframes aeZoomFade {
+  0%   { opacity: 0; transform: scale(1); }
+  5%   { opacity: 1; transform: scale(1.02); }
+  50%  { opacity: 1; transform: scale(1.10); }
+  60%  { opacity: 0; transform: scale(1.12); }
+  100% { opacity: 0; transform: scale(1.12); }
+}

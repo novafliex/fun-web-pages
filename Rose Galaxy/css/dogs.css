@@ -1,0 +1,205 @@
+/* ============================================
+   Easter Egg: Charlie & Max
+   极简线条小狗交互与 Blackout 效果
+   ============================================ */
+
+/* 绝对定位容器：隐秘探头 (Peek-a-boo) */
+.fixed-dogs-container {
+  position: fixed;
+  left: 40px;
+  bottom: -2px; /* 紧贴底部容差 */
+  z-index: 50;
+  display: flex;
+  gap: 30px; /* 两只小狗的间距 */
+  pointer-events: auto;
+  
+  /* 组合 Transform 变量控制 */
+  --dog-y: 36px;  /* 默认下沉，只露出耳朵尖 (因为耳朵在 Y=15~18，总高50) */
+  --dog-x: 0px;
+  --dog-skew: 0deg;
+  
+  transform: translateX(var(--dog-x)) translateY(var(--dog-y)) skewX(var(--dog-skew));
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fixed-dogs-container:hover {
+  /* Hover 唤醒：平滑升起 */
+  --dog-y: 0px;
+}
+
+.dog-wrapper {
+  position: relative;
+  width: 100px;
+  height: 50px;
+  cursor: pointer;
+}
+
+/* 极客风等宽字体名字气泡 */
+.dog-name {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(10, 10, 15, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+/* 默认状态：极细灰白线框，极度克制 */
+.dog-svg {
+  width: 100px;
+  height: 50px;
+  opacity: 0.4; /* 默认极低透明度改为0.4以适应暮色 */
+  transition: all 0.5s ease;
+  transform-origin: bottom center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.dog-line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5; /* 极细线条 */
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  /* 为 Hover 流转做准备 */
+  stroke-dasharray: 200;
+  stroke-dashoffset: 0;
+}
+
+.dog-eye {
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+/* ==================================
+   Hover 状态（抚摸唤醒）
+   ================================== */
+.dog-wrapper:hover .dog-svg {
+  opacity: 1;
+  /* 霓虹粉 */
+  color: #f43f5e;
+  filter: drop-shadow(0 0 6px rgba(244, 63, 94, 0.6));
+}
+
+.dog-wrapper:hover .dog-line {
+  /* 线条流动绘制效果：先隐藏再绘制出来 */
+  animation: svg-draw 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes svg-draw {
+  0% { stroke-dashoffset: 200; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.dog-wrapper:hover .dog-name {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.dog-wrapper:hover .dog-eye {
+  stroke-width: 2.5;
+}
+
+/* ==================================
+   风洞联动：Lenis 滚动物理反馈
+   ================================== */
+.fixed-dogs-container.is-windy {
+  /* 往后倾侧、微小位移 */
+  --dog-skew: -20deg;
+  --dog-x: 8px;
+  transition-duration: 0.15s;
+}
+
+/* ==================================
+   全屏断电彩蛋 (Blackout Mode & Neon Blessing)
+   ================================== */
+
+body.is-blackout {
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
+
+/* 全黑幕布 */
+.glitch-terminal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999; /* 保证最高层级 */
+  background-color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 恢复时的渐隐动画 */
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 1s ease-out, visibility 1s ease-out;
+}
+
+body.is-blackout .glitch-terminal {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* 祝福文字容器 */
+.blessing-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  text-align: center;
+}
+
+/* 主标题：极简中文微光 */
+.blessing-title {
+  font-family: inherit; /* 跟随全局优雅中文字体 */
+  font-weight: 300;
+  color: rgba(244, 63, 94, 0.9);
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  letter-spacing: 0.1em;
+  margin: 0;
+  text-shadow: 0 0 12px rgba(244, 63, 94, 0.5), 0 0 24px rgba(244, 63, 94, 0.3);
+}
+
+/* 副标题：手写英文落款 */
+.blessing-subtitle {
+  font-family: 'Caveat', cursive, sans-serif;
+  font-weight: 400;
+  color: #fdfbf7;
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  opacity: 0.7;
+  letter-spacing: 0.05em;
+  margin: 0;
+  text-shadow: 0 0 8px rgba(253, 251, 247, 0.4);
+}
+
+/* 核心灵魂：黑夜里的微光浮现动画 */
+body.is-blackout .blessing-content {
+  animation: neon-fade-in 3s ease-out forwards;
+}
+
+@keyframes neon-fade-in {
+  0% {
+    opacity: 0;
+    filter: blur(20px);
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+

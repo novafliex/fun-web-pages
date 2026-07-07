@@ -1,0 +1,77 @@
+/* ============================================
+   POKER SECTION — base structural styles
+   The visual card styles are now in melody.css.
+   This file keeps only the section wrapper
+   and the old card styles that melody.css overrides.
+   ============================================ */
+
+/* --- Section container --- */
+.poker-section {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  /* background is now set by .melody-page in melody.css */
+}
+
+/* Prevent the old section sizing from conflicting */
+.melody-page.poker-section {
+  min-height: 100vh;
+}
+
+/* --- Old poker container: hide / neutralise ---
+   The .poker-container div is kept in case any JS references it,
+   but it's been replaced by .melody-card-stage visually. */
+.poker-container {
+  /* neutralised — layout done by melody.css */
+  position: relative;
+  display: contents; /* let children flow into card-stage */
+}
+
+/* ---  Fallback: old card styles (overridden by melody.css) --- */
+.poker-card,
+.poker-trigger {
+  position: absolute;
+  cursor: pointer;
+}
+
+/* Old position classes — now driven by data-fan in melody.css */
+.poker-pos-1, .poker-pos-2, .poker-pos-3, .poker-pos-4, .poker-pos-5 {
+  /* These transforms are overridden by melody.css [data-fan] selectors */
+}
+
+/* --- Removed: old fixed floating player bar ---
+   .poker-player, .poker-player--active, .poker-player--paused
+   These are NO LONGER position:fixed.
+   The player lives inside .melody-player-panel (see melody.css).
+   Legacy class toggles from poker.js still work because
+   .melody-player-panel has id="poker-player" and melody.css
+   watches .is-playing on it.
+*/
+
+/* --- Toast: now-playing popup (kept global so it shows over melody page) --- */
+.poker-now-playing {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(16px) scale(0.92);
+  background: linear-gradient(135deg, rgba(30, 10, 50, 0.5), rgba(10, 8, 22, 0.78));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 200, 230, 0.12);
+  padding: 8px 20px;
+  border-radius: 24px;
+  font-size: 0.72rem;
+  color: rgba(220, 210, 235, 0.85);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 9000;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.32);
+}
+
+.poker-now-playing.poker-now-playing--show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+}

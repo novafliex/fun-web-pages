@@ -1,0 +1,874 @@
+/* ============================================================
+   MELODY PAGE — music/poker redesign
+   ALL selectors scoped under .melody-page
+   No leakage to other pages.
+   ============================================================ */
+
+/* ── Page shell ──────────────────────────────────────────── */
+.melody-page {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  padding: 0;
+  background: transparent;
+  /* Ensure this section never leaks below 100vh */
+  box-sizing: border-box;
+}
+
+/* ── Two-column grid layout ──────────────────────────────── */
+.melody-page .melody-layout {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 0.82fr 1.4fr;
+  align-items: center;
+  gap: 52px;
+  padding: 80px 8vw;
+  box-sizing: border-box;
+}
+
+/* ── LEFT: Player console ────────────────────────────────── */
+.melody-page .melody-player-panel {
+  /* Compact, not oversized */
+  width: min(430px, 100%);
+  padding: 32px 34px 28px;
+  border-radius: 34px;
+  background:
+    linear-gradient(160deg, rgba(22, 18, 48, 0.78) 0%, rgba(8, 10, 22, 0.65) 100%);
+  backdrop-filter: blur(26px);
+  -webkit-backdrop-filter: blur(26px);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow:
+    0 32px 90px rgba(0, 0, 0, 0.52),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 0 60px rgba(190, 120, 255, 0.10);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+
+  /* Override any inherited fixed positioning */
+  position: static !important;
+  transform: none !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+
+  transition:
+    box-shadow 0.7s ease,
+    border-color 0.5s ease;
+}
+
+/* Playing state glow */
+.melody-page .melody-player-panel.is-playing {
+  box-shadow:
+    0 32px 90px rgba(0, 0, 0, 0.52),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 0 70px rgba(220, 140, 255, 0.18),
+    0 0 28px rgba(255, 120, 170, 0.12);
+  border-color: rgba(230, 180, 255, 0.18);
+}
+
+/* ── Title block ─────────────────────────────────────────── */
+.melody-page .melody-title-block {
+  /* No extra gap — keeps panel compact */
+}
+
+.melody-page .melody-title-block h1 {
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  background: linear-gradient(130deg, #f0e6ff 0%, #ffd6e8 55%, #c9b8ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 5px;
+  line-height: 1;
+}
+
+.melody-page .melody-title-block p {
+  font-size: 0.72rem;
+  color: rgba(195, 182, 225, 0.50);
+  letter-spacing: 0.07em;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Now Playing inner card ──────────────────────────────── */
+.melody-page .now-playing {
+  padding: 15px 15px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.085);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.melody-page .player-mini-cover {
+  width: 74px;
+  height: 74px;
+  border-radius: 16px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 200, 230, 0.08);
+  background: rgba(30, 20, 50, 0.6);
+  transition: box-shadow 0.45s ease;
+}
+
+.melody-page .melody-player-panel.is-playing .player-mini-cover {
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.45),
+    0 0 22px rgba(255, 120, 170, 0.28);
+}
+
+.melody-page .song-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.melody-page .song-meta .label {
+  font-size: 0.64rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(210, 160, 245, 0.78);
+}
+
+.melody-page .song-meta h2 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: rgba(248, 242, 255, 0.97);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.melody-page .song-meta p {
+  font-size: 0.78rem;
+  color: rgba(180, 168, 208, 0.65);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Progress area ───────────────────────────────────────── */
+.melody-page .progress-area {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.melody-page .time-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: rgba(175, 165, 205, 0.52);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Progress slider ─────────────────────────────────────── */
+.melody-page .progress-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(
+    to right,
+    rgba(255, 130, 180, 0.85) var(--progress, 0%),
+    rgba(175, 130, 255, 0.80) var(--progress, 0%),
+    rgba(255, 255, 255, 0.12) var(--progress, 0%)
+  );
+  outline: none;
+  cursor: pointer;
+}
+
+.melody-page .progress-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff82b4, #b07aff);
+  box-shadow: 0 0 8px rgba(255, 120, 170, 0.55);
+  cursor: pointer;
+  margin-top: -5px;
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+.melody-page .progress-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
+  box-shadow: 0 0 16px rgba(255, 120, 170, 0.75);
+}
+
+.melody-page .progress-slider::-moz-range-thumb {
+  width: 13px;
+  height: 13px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff82b4, #b07aff);
+  box-shadow: 0 0 8px rgba(255, 120, 170, 0.55);
+  cursor: pointer;
+}
+
+/* ── Control row ─────────────────────────────────────────── */
+.melody-page .control-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Base button reset */
+.melody-page .control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.28s ease,
+    background 0.28s ease,
+    border-color 0.28s ease;
+}
+
+/* Prev / Next */
+.melody-page .control-btn.prev-btn,
+.melody-page .control-btn.next-btn {
+  width: 46px;
+  height: 46px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  color: rgba(220, 205, 255, 0.82);
+}
+
+/* SVG icons for prev/next */
+.melody-page .control-btn.prev-btn::before {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 7px 10px 7px 0;
+  border-color: transparent currentColor transparent transparent;
+  margin-right: 2px;
+}
+
+.melody-page .control-btn.next-btn::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 7px 0 7px 10px;
+  border-color: transparent transparent transparent currentColor;
+  margin-left: 2px;
+}
+
+/* Play/Pause — larger, gradient bg */
+.melody-page .control-btn.play-btn {
+  width: 62px;
+  height: 62px;
+  background: linear-gradient(135deg, rgba(255, 105, 155, 0.30), rgba(150, 110, 255, 0.30));
+  border: 1px solid rgba(255, 160, 200, 0.30);
+  box-shadow:
+    0 0 28px rgba(255, 120, 170, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  color: rgba(255, 235, 248, 0.95);
+}
+
+/* Play icon — triangle */
+.melody-page .control-btn.play-btn::before {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 0 10px 17px;
+  border-color: transparent transparent transparent currentColor;
+  margin-left: 4px;
+  transition: opacity 0.2s ease;
+}
+
+/* Pause — override with two bars */
+.melody-page .melody-player-panel.is-playing .control-btn.play-btn::before {
+  display: none;
+}
+
+.melody-page .melody-player-panel.is-playing .control-btn.play-btn::after {
+  content: '';
+  display: block;
+  width: 16px;
+  height: 16px;
+  background:
+    linear-gradient(currentColor, currentColor) 1px 0 / 5px 100% no-repeat,
+    linear-gradient(currentColor, currentColor) 10px 0 / 5px 100% no-repeat;
+}
+
+/* Hover states */
+.melody-page .control-btn:hover {
+  transform: scale(1.09);
+}
+
+.melody-page .control-btn.prev-btn:hover,
+.melody-page .control-btn.next-btn:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 165, 210, 0.42);
+  box-shadow: 0 0 14px rgba(255, 130, 180, 0.14);
+  color: rgba(255, 230, 248, 1);
+}
+
+.melody-page .control-btn.play-btn:hover {
+  background: linear-gradient(135deg, rgba(255, 105, 155, 0.44), rgba(150, 110, 255, 0.44));
+  border-color: rgba(255, 170, 210, 0.55);
+  box-shadow: 0 0 38px rgba(255, 120, 170, 0.26);
+}
+
+/* ── Equalizer ───────────────────────────────────────────── */
+.melody-page .equalizer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+  height: 24px;
+  margin-top: 2px;
+}
+
+.melody-page .equalizer span {
+  display: block;
+  width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(to top, rgba(255, 120, 170, 0.72), rgba(175, 130, 255, 0.72));
+  height: 3px;
+  transform-origin: bottom;
+  transition: height 0.3s ease, opacity 0.3s ease;
+  opacity: 0.45;
+}
+
+/* Active equalizer animation */
+.melody-page .melody-player-panel.is-playing .equalizer span {
+  opacity: 0.92;
+  animation: eq-melody 1s ease-in-out infinite;
+}
+
+.melody-page .melody-player-panel.is-playing .equalizer span:nth-child(1) {
+  animation-delay: 0.00s; animation-duration: 0.72s;
+}
+.melody-page .melody-player-panel.is-playing .equalizer span:nth-child(2) {
+  animation-delay: 0.18s; animation-duration: 0.98s;
+}
+.melody-page .melody-player-panel.is-playing .equalizer span:nth-child(3) {
+  animation-delay: 0.04s; animation-duration: 0.62s;
+}
+.melody-page .melody-player-panel.is-playing .equalizer span:nth-child(4) {
+  animation-delay: 0.38s; animation-duration: 0.88s;
+}
+.melody-page .melody-player-panel.is-playing .equalizer span:nth-child(5) {
+  animation-delay: 0.14s; animation-duration: 0.76s;
+}
+
+@keyframes eq-melody {
+  0%, 100% { height: 3px; }
+  50% {
+    height: 20px;
+    filter: drop-shadow(0 0 4px rgba(255, 120, 170, 0.65));
+  }
+}
+
+/* ── RIGHT: Card stage ───────────────────────────────────── */
+.melody-page .melody-card-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 520px;
+  transform: translateY(-6px);
+  transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* While music is playing, lift the card stage slightly so the active poker area
+   sits above the visual center instead of sinking into the lower background. */
+.melody-page.is-playing .melody-card-stage {
+  transform: translateY(-26px);
+}
+
+/* Decorative glow behind cards */
+.melody-page .melody-card-stage::before {
+  content: '';
+  position: absolute;
+  left: 48%;
+  top: 52%;
+  width: 560px;
+  height: 560px;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  background:
+    radial-gradient(circle, rgba(255, 120, 180, 0.18), transparent 58%),
+    radial-gradient(circle at 62% 44%, rgba(175, 130, 255, 0.12), transparent 48%);
+  filter: blur(18px);
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.7s ease;
+}
+
+.melody-page .melody-card-stage::after {
+  content: '';
+  position: absolute;
+  left: 48%;
+  top: 59%;
+  width: 430px;
+  height: 150px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    ellipse,
+    rgba(0, 0, 0, 0.30) 0%,
+    rgba(0, 0, 0, 0.18) 45%,
+    transparent 72%
+  );
+  filter: blur(28px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.melody-page.is-playing .melody-card-stage::before {
+  animation: stage-breathe 2.8s ease-in-out infinite alternate;
+}
+
+@keyframes stage-breathe {
+  0% {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+/* ── Poker cards ─────────────────────────────────────────── */
+.melody-page .poker-card {
+  position: absolute;
+  width: 280px;
+  height: 420px;
+  border-radius: 28px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 34px 90px rgba(0, 0, 0, 0.52),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transform-origin: center bottom;
+
+  /* Center in stage */
+  top: 50%;
+  left: 50%;
+  margin-top: -210px;
+  margin-left: -140px;
+
+  transition:
+    transform  0.55s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity    0.45s ease,
+    filter     0.45s ease,
+    box-shadow 0.45s ease,
+    border-color 0.4s ease;
+
+  z-index: 2;
+}
+
+.melody-page .poker-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: brightness(0.92) saturate(0.95);
+  pointer-events: none;
+}
+
+/* Unified photo tint and readable title fade */
+.melody-page .poker-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(12, 8, 22, 0.10), rgba(12, 8, 22, 0.30)),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.58), transparent 42%),
+    linear-gradient(130deg, rgba(255, 135, 188, 0.08), transparent 38%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Card text at bottom */
+.melody-page .card-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding: 12px 16px 18px;
+}
+
+.melody-page .card-title {
+  font-size: 0.90rem;
+  font-weight: 600;
+  color: rgba(255, 242, 252, 0.95);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+
+.melody-page .card-artist {
+  font-size: 0.70rem;
+  color: rgba(200, 185, 220, 0.62);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Play button on active card */
+.melody-page .card-play-btn {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.94);
+  z-index: 3;
+  width: 58px;
+  height: 58px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(22, 18, 32, 0.48);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  box-shadow: 0 0 28px rgba(255, 130, 180, 0.18);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease,
+    box-shadow 0.4s ease,
+    background 0.4s ease;
+  pointer-events: none;
+}
+
+.melody-page .card-play-btn::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 9px 0 9px 15px;
+  border-color: transparent transparent transparent rgba(255, 232, 248, 0.92);
+  margin-left: 3px;
+}
+
+/* ── Fan positions (data-fan attributes) ─────────────────── */
+.melody-page .poker-card[data-fan="0"] {
+  transform: rotate(-16deg) translateX(-95px) translateY(26px) scale(0.88);
+  z-index: 1;
+}
+
+.melody-page .poker-card[data-fan="1"] {
+  transform: rotate(-7deg) translateX(-42px) translateY(10px) scale(0.96);
+  z-index: 2;
+}
+
+.melody-page .poker-card[data-fan="2"] {
+  transform: rotate(0deg) translateX(10px) translateY(-18px) scale(1.07);
+  z-index: 3;
+}
+
+.melody-page .poker-card[data-fan="3"] {
+  transform: rotate(8deg) translateX(66px) translateY(12px) scale(0.95);
+  z-index: 2;
+}
+
+.melody-page .poker-card[data-fan="4"] {
+  transform: rotate(16deg) translateX(120px) translateY(30px) scale(0.88);
+  z-index: 1;
+}
+
+/* ── Active card ─────────────────────────────────────────── */
+.melody-page .poker-card.is-active {
+  z-index: 10 !important;
+  opacity: 1 !important;
+  filter: brightness(1.06) saturate(1.04) !important;
+  border-color: rgba(255, 166, 210, 0.38) !important;
+  box-shadow:
+    0 42px 110px rgba(0, 0, 0, 0.62),
+    0 0 68px rgba(255, 130, 180, 0.34),
+    0 0 22px rgba(180, 140, 255, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.09) !important;
+}
+
+/* Show play button on active card */
+.melody-page .poker-card.is-active .card-play-btn {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.melody-page .poker-card.is-active:hover .card-play-btn {
+  background: rgba(28, 22, 40, 0.58);
+  box-shadow:
+    0 0 34px rgba(255, 130, 180, 0.30),
+    0 0 12px rgba(255, 255, 255, 0.10);
+}
+
+/* Active card breathing animation when playing */
+.melody-page.is-playing .poker-card.is-active {
+  animation: active-card-breathe 2.6s ease-in-out infinite alternate;
+}
+
+@keyframes active-card-breathe {
+  0% {
+    box-shadow:
+      0 44px 110px rgba(0, 0, 0, 0.62),
+      0 0 52px rgba(255, 130, 180, 0.24),
+      inset 0 1px 0 rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 160, 205, 0.28);
+  }
+  100% {
+    box-shadow:
+      0 44px 110px rgba(0, 0, 0, 0.62),
+      0 0 88px rgba(255, 130, 180, 0.40),
+      0 0 28px rgba(180, 140, 255, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 175, 215, 0.48);
+  }
+}
+
+/* ── Non-active cards ────────────────────────────────────── */
+.melody-page .poker-card:not(.is-active) {
+  opacity: 0.68;
+  filter: brightness(0.82) saturate(0.92) grayscale(0.08);
+}
+
+.melody-page .poker-card[data-fan="0"]:not(.is-active),
+.melody-page .poker-card[data-fan="4"]:not(.is-active) {
+  opacity: 0.62;
+  filter: brightness(0.78) saturate(0.90) grayscale(0.12);
+}
+
+.melody-page .poker-card[data-fan="1"]:not(.is-active),
+.melody-page .poker-card[data-fan="3"]:not(.is-active) {
+  opacity: 0.72;
+  filter: brightness(0.84) saturate(0.94) grayscale(0.08);
+}
+
+.melody-page .poker-card:not(.is-active):hover {
+  opacity: 0.82;
+  filter: brightness(0.90) saturate(0.98) grayscale(0.04);
+  border-color: rgba(255, 200, 230, 0.28);
+  box-shadow:
+    0 40px 100px rgba(0, 0, 0, 0.56),
+    0 0 32px rgba(255, 120, 170, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+/* ── Now-playing toast (global, not scoped) ──────────────── */
+.poker-now-playing {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(16px) scale(0.92);
+  background: linear-gradient(135deg, rgba(30, 10, 50, 0.55), rgba(10, 8, 22, 0.80));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 200, 230, 0.12);
+  padding: 8px 22px;
+  border-radius: 24px;
+  font-size: 0.72rem;
+  color: rgba(220, 210, 240, 0.88);
+  letter-spacing: 0.07em;
+  white-space: nowrap;
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 9000;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.32);
+}
+
+.poker-now-playing.poker-now-playing--show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+/* When the toast is inside the card stage, show it above the poker cards,
+   horizontally centered over the active-card area. */
+.melody-page .melody-card-stage .poker-now-playing {
+  position: absolute;
+  top: 20px;
+  bottom: auto;
+  left: 50%;
+  transform: translateX(-50%) translateY(-12px) scale(0.96);
+  z-index: 30;
+  background: linear-gradient(135deg, rgba(24, 10, 28, 0.62), rgba(78, 18, 46, 0.58));
+  border-color: rgba(255, 185, 215, 0.24);
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.32),
+    0 0 22px rgba(205, 72, 112, 0.20);
+}
+
+.melody-page .melody-card-stage .poker-now-playing.poker-now-playing--show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.melody-page.is-playing .poker-card.is-active .card-play-btn {
+  top: 44%;
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════ */
+
+/* Tablet: 769px – 1150px */
+@media (max-width: 1150px) and (min-width: 769px) {
+  .melody-page .melody-layout {
+    grid-template-columns: 1fr 1.2fr;
+    gap: 36px;
+    padding: 70px 5vw;
+  }
+
+  .melody-page .melody-player-panel {
+    width: min(380px, 100%);
+    padding: 28px 26px;
+  }
+
+  .melody-page .poker-card {
+    width: 240px;
+    height: 360px;
+    margin-top: -180px;
+    margin-left: -120px;
+  }
+
+  /* Tighten fan on tablet */
+  .melody-page .poker-card[data-fan="0"] {
+    transform: rotate(-13deg) translateX(-72px) translateY(20px) scale(0.88);
+  }
+  .melody-page .poker-card[data-fan="1"] {
+    transform: rotate(-6deg) translateX(-34px) translateY(8px) scale(0.96);
+  }
+  .melody-page .poker-card[data-fan="2"] {
+    transform: rotate(0deg) translateX(8px) translateY(-14px) scale(1.06);
+  }
+  .melody-page .poker-card[data-fan="3"] {
+    transform: rotate(6deg) translateX(50px) translateY(10px) scale(0.95);
+  }
+  .melody-page .poker-card[data-fan="4"] {
+    transform: rotate(13deg) translateX(92px) translateY(22px) scale(0.88);
+  }
+
+  .melody-page .melody-card-stage::before {
+    width: 380px;
+    height: 380px;
+  }
+}
+
+/* Mobile: ≤ 768px — stack vertically */
+@media (max-width: 768px) {
+  .melody-page .melody-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 40px 12px 44px;
+    gap: 32px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Cards on top */
+  .melody-page .melody-card-stage {
+    order: 1;
+    width: 100%;
+    min-height: 320px;
+    transform: translateY(-4px);
+  }
+
+  .melody-page.is-playing .melody-card-stage {
+    transform: translateY(-14px);
+  }
+
+  .melody-page .melody-card-stage .poker-now-playing {
+    top: 0;
+    max-width: calc(100vw - 48px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Player below */
+  .melody-page .melody-player-panel {
+    order: 2;
+    width: calc(100vw - 24px);
+    min-width: 0;
+    max-width: 100%;
+    padding: 24px 20px 22px;
+    position: static !important;
+  }
+
+  .melody-page .poker-card {
+    width: min(68vw, 248px);
+    height: min(102vw, 372px);
+    margin-top: calc(-1 * min(51vw, 186px));
+    margin-left: calc(-1 * min(34vw, 124px));
+  }
+
+  /* Condensed mobile fan */
+  .melody-page .poker-card[data-fan="0"] {
+    transform: rotate(-12deg) translateX(-64px) translateY(18px) scale(0.86);
+  }
+  .melody-page .poker-card[data-fan="1"] {
+    transform: rotate(-5deg) translateX(-30px) translateY(6px) scale(0.94);
+  }
+  .melody-page .poker-card[data-fan="2"] {
+    transform: rotate(0deg) translateX(4px) translateY(-12px) scale(1.04);
+  }
+  .melody-page .poker-card[data-fan="3"] {
+    transform: rotate(5deg) translateX(38px) translateY(8px) scale(0.94);
+  }
+  .melody-page .poker-card[data-fan="4"] {
+    transform: rotate(12deg) translateX(70px) translateY(20px) scale(0.86);
+  }
+
+  .melody-page .melody-card-stage::before {
+    width: 280px;
+    height: 280px;
+  }
+
+  .melody-page .control-btn.play-btn {
+    width: 56px;
+    height: 56px;
+  }
+
+  .melody-page .control-btn.prev-btn,
+  .melody-page .control-btn.next-btn {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* Hard prevent horizontal overflow on any viewport */
+.melody-page,
+.melody-page .melody-layout,
+.melody-page .melody-card-stage {
+  max-width: 100vw;
+  overflow-x: clip;
+}

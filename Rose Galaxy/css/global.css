@@ -1,0 +1,97 @@
+/* ============================================
+   GLOBAL STYLES
+   全局样式 — 重置 / 字体 / 滚动条 / 基础
+   ============================================ */
+
+:root {
+  --main-accent: #f43f5e;
+  --accent-rgb: 244, 63, 94;
+  --accent-gradient: linear-gradient(135deg, #f43f5e, #a855f7);
+  --text-light: #ffffff;
+  --bg-dusk-base: #1a1a2e;
+  --bg-dusk-alt: #23233b;
+  --bg-dark: #0a0a0f;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background:
+    linear-gradient(180deg, rgba(8, 6, 12, 0.28) 0%, rgba(8, 6, 12, 0.42) 55%, rgba(5, 5, 9, 0.56) 100%),
+    radial-gradient(circle at 58% 24%, rgba(130, 30, 70, 0.10), transparent 38%),
+    url('../img/background.jpg') center center / cover fixed no-repeat;
+  color: var(--text-light);
+  overflow-x: hidden;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* All page sections sit above the rose background */
+.hero-section,
+.showcase-section,
+.about-section,
+.cinema-section,
+.poker-section,
+.melody-page,
+.footer-section,
+footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dusk-base);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #6366f1, #a855f7);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #818cf8, #c084fc);
+}
+
+/* 选中文本颜色 */
+::selection {
+  background: rgba(139, 92, 246, 0.3);
+  color: #fff;
+}
+
+/* 链接重置 */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 图片重置 */
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* 按钮重置 */
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+  font-family: inherit;
+}

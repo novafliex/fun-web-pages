@@ -1,0 +1,439 @@
+/* ============================================
+   HERO SECTION
+   开屏全屏背景区域 — 极简排版 + 玫瑰氛围
+   ============================================ */
+
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* ============================================
+   视差背景层与深景模糊
+   ============================================ */
+.hero-layer-bg {
+  position: absolute;
+  top: -7%;
+  left: -7%;
+  width: 114%;
+  height: 114%;
+  background: url('../img/background.jpg') center top / cover no-repeat;
+  z-index: 0;
+  opacity: 0.42;
+  filter: saturate(0.92) contrast(0.82) brightness(0.92) blur(0.45px);
+  mix-blend-mode: normal;
+  -webkit-mask-image: radial-gradient(ellipse at 34% 48%, #000 0%, rgba(0, 0, 0, 0.92) 42%, rgba(0, 0, 0, 0.48) 72%, transparent 96%);
+  mask-image: radial-gradient(ellipse at 34% 48%, #000 0%, rgba(0, 0, 0, 0.92) 42%, rgba(0, 0, 0, 0.48) 72%, transparent 96%);
+  will-change: transform, filter;
+  transform: translate3d(0, 0, 0);
+}
+
+/* ============================================
+   动态雾效蒙版 (Fog Overlay)
+   ============================================ */
+.hero-fog-overlay {
+  position: absolute;
+  inset: -20%;
+  width: 140%;
+  height: 140%;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 30% 44%, rgba(118, 32, 67, 0.105) 0%, transparent 44%),
+    radial-gradient(ellipse at center, transparent 0%, rgba(5, 8, 18, 0.03) 58%, rgba(5, 7, 16, 0.22) 100%);
+  opacity: 0.18;
+  animation: fogDrift 40s linear infinite alternate;
+  will-change: transform;
+}
+
+@keyframes fogDrift {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(-3%, -2%, 0) scale(1.05); }
+}
+
+/* 背景暗色遮罩与聚光灯效果 */
+.hero-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(4, 7, 18, 0.30) 0%, rgba(8, 10, 24, 0.14) 34%, rgba(8, 10, 24, 0.01) 66%, rgba(8, 10, 24, 0.05) 100%),
+    linear-gradient(to bottom, rgba(4, 7, 18, 0.01) 0%, rgba(4, 7, 18, 0) 50%, rgba(4, 7, 18, 0.16) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* 色彩晕染补充玫瑰氛围 */
+.hero-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 22% 34%, rgba(128, 34, 70, 0.085) 0%, transparent 42%),
+    radial-gradient(circle at 75% 55%, rgba(178, 145, 255, 0.040) 0%, transparent 45%),
+    radial-gradient(circle at 50% 80%, rgba(120, 170, 255, 0.034) 0%, transparent 40%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ============================================
+   AWWWARDS STYLE: 网格线与边角文字
+   ============================================ */
+
+.hero-grid-h, .hero-grid-v {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.06);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.hero-grid-h {
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+}
+
+.hero-grid-v {
+  top: 0;
+  left: 20%;
+  width: 1px;
+  height: 100%;
+}
+
+.hero-label {
+  position: absolute;
+  z-index: 4;
+  font-family: Arial, sans-serif;
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(16px);
+  filter: blur(6px);
+  animation: heroCinematicReveal 0.72s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
+}
+
+.hero-label--tl { top: 40px; left: 40px; }
+.hero-label--tr { top: 40px; right: 40px; animation-delay: 1.02s; }
+.hero-label--bl { bottom: 40px; left: 40px; animation-delay: 1.14s; }
+
+/* ============================================
+   中心内容布局 (MUSIC GALLERY)
+   ============================================ */
+
+.hero-content {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: 1220px; /* 扩展一点，让极简排版更透气 */
+  padding: 0 8vw; /* 让左侧有呼吸感 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start; /* 改为左部对齐 */
+  margin-top: 0;
+}
+
+.hero-copy-panel {
+  position: relative;
+  width: min(590px, 100%);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.hero-title-wrap {
+  overflow: hidden;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+/* 清爽的高级排版主标题 */
+.hero-title {
+  position: relative;
+  font-size: 3.05rem; 
+  font-weight: 400; 
+  letter-spacing: 0.095em;
+  line-height: 1.08;
+  display: block;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, #ffffff 0%, #ffe4e6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 8px 28px rgba(0, 0, 0, 0.42);
+  opacity: 0;
+  transform: translateY(16px);
+  filter: blur(6px);
+}
+
+.hero-title.in-view {
+  animation: heroCinematicReveal 0.82s cubic-bezier(0.16, 1, 0.3, 1) 0.24s forwards;
+}
+
+@keyframes heroCinematicReveal {
+  0% { transform: translateY(16px); opacity: 0; filter: blur(6px); }
+  100% { transform: translateY(0); opacity: 1; filter: blur(0); }
+}
+
+.hero-subtitle-wrap {
+  overflow: hidden;
+  margin-top: 0.4rem;
+}
+
+.hero-subtitle {
+  font-size: 0.96rem;
+  font-weight: 500;
+  color: rgba(255, 238, 240, 0.88);
+  letter-spacing: 0.035em;
+  text-transform: none;
+  text-shadow: 0 7px 22px rgba(0, 0, 0, 0.48);
+  transform: translateY(16px);
+  filter: blur(6px);
+  opacity: 0;
+}
+
+.hero-subtitle.in-view {
+  animation: heroCinematicReveal 0.78s cubic-bezier(0.16, 1, 0.3, 1) 0.42s forwards;
+}
+
+/* ============================================
+   额外装饰与交互
+   ============================================ */
+
+.hero-deco-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.hero-deco-orb--1 {
+  top: 15%; right: 15%; width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(128, 38, 78, 0.09) 0%, rgba(118, 145, 255, 0.025) 42%, transparent 64%);
+  animation: orbFloat1 12s ease-in-out infinite alternate;
+}
+
+@keyframes orbFloat1 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-30px, 40px) scale(1.1); }
+}
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  right: 60px; /* 改为右下侧摆放，Awwwards 风格 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.3);
+  text-decoration: none;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  z-index: 2;
+  opacity: 0;
+  animation: fadeIn 1s ease 1s forwards;
+  transition: color 0.3s ease;
+}
+
+.hero-scroll-hint:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.hero-scroll-arrow {
+  width: 14px;
+  height: 14px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  animation: heroBounce 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes heroBounce {
+  0%, 100% { transform: rotate(45deg) translate(0, 0); opacity: 0.4; }
+  50% { transform: rotate(45deg) translate(4px, 4px); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+.hero-divider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 190px;
+  background:
+    linear-gradient(to bottom,
+      transparent 0%,
+      rgba(10, 10, 15, 0.16) 34%,
+      rgba(10, 10, 15, 0.52) 74%,
+      rgba(10, 10, 15, 0.78) 100%
+    );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ============================================
+   新增：自我介绍段落与标签
+   ============================================ */
+
+.hero-desc-wrap {
+  overflow: hidden;
+  margin-top: 1.35rem;
+}
+
+.hero-desc {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.82;
+  letter-spacing: 0.03em;
+  max-width: 520px;
+  text-shadow: 0 7px 24px rgba(0, 0, 0, 0.5);
+  transform: translateY(16px);
+  filter: blur(6px);
+  opacity: 0;
+}
+
+.hero-desc.in-view {
+  animation: heroCinematicReveal 0.78s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.78rem;
+  margin-top: 1.55rem;
+  opacity: 0;
+  transform: translateY(16px);
+  filter: blur(6px);
+  animation: heroCinematicReveal 0.78s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
+}
+
+.hero-action {
+  position: relative;
+  overflow: hidden;
+  min-width: 108px;
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.68rem 1.18rem;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: rgba(255, 240, 242, 0.9);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 400;
+  letter-spacing: 0.075em;
+  background:
+    linear-gradient(rgba(26, 8, 14, 0.28), rgba(26, 8, 14, 0.28)) padding-box,
+    linear-gradient(135deg, rgba(255, 228, 230, 0.18), rgba(190, 24, 93, 0.56), rgba(255, 228, 230, 0.12)) border-box;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.14), inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  transition: transform 0.24s ease, background 0.24s ease, color 0.24s ease, box-shadow 0.24s ease;
+}
+
+.hero-action:hover {
+  transform: translateY(-2px);
+  color: #fff;
+  background:
+    linear-gradient(rgba(96, 14, 30, 0.24), rgba(96, 14, 30, 0.24)) padding-box,
+    linear-gradient(135deg, rgba(255, 228, 230, 0.32), rgba(244, 83, 108, 0.74), rgba(255, 228, 230, 0.18)) border-box;
+  box-shadow: 0 0 24px rgba(190, 24, 93, 0.18), 0 10px 28px rgba(0, 0, 0, 0.18), inset 0 0 0 1px rgba(255, 228, 230, 0.045);
+}
+
+.hero-action:active {
+  transform: translateY(-1px) scale(0.97);
+  transition-duration: 0.12s;
+}
+
+.hero-action--primary {
+  background:
+    linear-gradient(rgba(98, 14, 32, 0.22), rgba(98, 14, 32, 0.22)) padding-box,
+    linear-gradient(135deg, rgba(255, 228, 230, 0.22), rgba(244, 83, 108, 0.66), rgba(255, 228, 230, 0.14)) border-box;
+  color: #fff;
+}
+
+.hero-action--ghost {
+  background:
+    linear-gradient(rgba(12, 10, 14, 0.18), rgba(12, 10, 14, 0.18)) padding-box,
+    linear-gradient(135deg, rgba(255, 228, 230, 0.14), rgba(190, 24, 93, 0.42), rgba(255, 228, 230, 0.1)) border-box;
+}
+
+.hero-action--primary:hover,
+.hero-action--ghost:hover {
+  background:
+    linear-gradient(rgba(96, 14, 30, 0.24), rgba(96, 14, 30, 0.24)) padding-box,
+    linear-gradient(135deg, rgba(255, 228, 230, 0.32), rgba(244, 83, 108, 0.74), rgba(255, 228, 230, 0.18)) border-box;
+}
+
+/* 移动端: 减小 padding-left 偏移 */
+@media (max-width: 768px) {
+  .hero-content {
+    padding: 0 1.35rem;
+    align-items: flex-start;
+  }
+
+  .hero-copy-panel {
+    padding: 0;
+    background: transparent;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+    letter-spacing: 0.065em;
+    overflow-wrap: anywhere;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+  }
+
+  .hero-desc {
+    font-size: 0.92rem;
+    line-height: 1.75;
+  }
+
+  .hero-actions {
+    width: 100%;
+    gap: 0.65rem;
+  }
+
+  .hero-action {
+    flex: 1 1 130px;
+    min-width: 0;
+    padding: 0.72rem 0.9rem;
+    font-size: 0.88rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-label,
+  .hero-title,
+  .hero-subtitle,
+  .hero-desc,
+  .hero-actions {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    animation: none !important;
+  }
+}

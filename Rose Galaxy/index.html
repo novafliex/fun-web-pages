@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Nova Fliex 个人作品集，展示阅读、电影、摄影和音乐播放器。"
+    />
+    <title>Nova Fliex</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/hero.css" />
+    <link rel="stylesheet" href="css/showcase.css" />
+    <link rel="stylesheet" href="css/audio-wave.css" />
+    <link rel="stylesheet" href="css/poker.css" />
+    <link rel="stylesheet" href="css/melody.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+    <link rel="stylesheet" href="css/galaxy.css?v=real-motion-4" />
+    <link rel="stylesheet" href="css/dogs.css" />
+    <link rel="stylesheet" href="css/cursor.css" />
+  </head>
+
+  <body>
+    <!-- ═══════════════════════════════════════════
+         HERO
+         ═══════════════════════════════════════════ -->
+    <section class="hero-section" id="hero">
+      <div class="hero-layer hero-layer-bg" id="hero-bg"></div>
+      <canvas
+        id="hero-galaxy-canvas"
+        class="hero-galaxy-canvas"
+        aria-hidden="true"
+      ></canvas>
+      <div class="hero-fog-overlay"></div>
+      <div class="hero-grid-h"></div>
+      <div class="hero-grid-v"></div>
+
+      <div class="hero-label hero-label--tl">01 - INTRO</div>
+      <div class="hero-label hero-label--tr">NOVA FLIEX // 2026</div>
+      <div class="hero-label hero-label--bl">SCROLL TO DELVE</div>
+
+      <div class="hero-deco-orb hero-deco-orb--1"></div>
+      <div class="hero-deco-orb hero-deco-orb--2"></div>
+      <div class="hero-deco-orb hero-deco-orb--3"></div>
+
+      <div class="hero-content">
+        <div class="hero-copy-panel">
+          <div class="hero-title-wrap">
+            <h1 class="hero-title" id="hero-title">NOVA FLIEX</h1>
+          </div>
+          <div class="hero-subtitle-wrap">
+            <p class="hero-subtitle" id="hero-subtitle">
+              区块链工程学生 / Go 后端学习者
+            </p>
+          </div>
+          <div class="hero-desc-wrap">
+            <p class="hero-desc" id="hero-desc">
+              以计算机基础学习和项目实践为主线，持续提升 Go 后端、Web
+              项目开发与工程实践能力。
+            </p>
+          </div>
+          <div class="hero-actions" aria-label="首页操作">
+            <a href="#showcase-1" class="hero-action hero-action--primary"
+              >学习方向</a
+            >
+            <a href="#footer" class="hero-action hero-action--ghost"
+              >联系方式</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-divider"></div>
+      <a
+        href="#showcase-1"
+        class="hero-scroll-hint"
+        aria-label="滚动到作品展示"
+      >
+        <div class="hero-scroll-arrow"></div>
+      </a>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         ABOUT
+         ═══════════════════════════════════════════ -->
+    <section class="showcase-section about-section" id="showcase-1">
+      <div class="showcase-number">01</div>
+      <div class="showcase-content about-content">
+        <div class="showcase-text about-text">
+          <span class="showcase-label">ABOUT ME</span>
+          <h2 class="showcase-title about-title">
+            <span class="outline">ABOUT ME</span><br />
+            <span class="accent">关于我</span>
+          </h2>
+          <p class="showcase-desc about-desc">
+            我是
+            Fliex，一名区块链工程专业学生。平时会把学习、编程和生活记录结合起来，希望在持续积累中提升自己的基础能力、表达能力和解决问题的能力。
+          </p>
+        </div>
+
+        <div class="showcase-visual about-media" aria-label="生活影像片段">
+          <figure class="about-photo about-photo--main">
+            <img src="img/p2.jpg" alt="生活记录影像" />
+            <figcaption>Life fragments</figcaption>
+          </figure>
+          <figure class="about-photo about-photo--small">
+            <img src="img/p1.png" alt="日常片段影像" />
+            <figcaption>Daily records</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         CINEMA
+         ═══════════════════════════════════════════ -->
+    <section class="showcase-section cinema-section" id="showcase-2">
+      <div class="showcase-number">02</div>
+      <div class="showcase-content cinema-content">
+        <div class="showcase-text cinema-text">
+          <span class="showcase-label">CINEMATIC TASTE</span>
+          <h2 class="showcase-title cinema-title">
+            <span class="outline">CINEMA</span><br />
+            <span class="accent">光影偏好</span>
+          </h2>
+          <p class="showcase-desc cinema-desc">
+            我喜欢那些节奏安静、情绪细腻、画面有记忆点的电影。它们不一定强烈，却能在某个片段里留下很久的余韵。
+          </p>
+          <div class="showcase-tags cinema-tags">
+            <span class="showcase-tag">治愈</span>
+            <span class="showcase-tag">文艺</span>
+            <span class="showcase-tag">青春</span>
+            <span class="showcase-tag">余韵</span>
+          </div>
+        </div>
+
+        <div class="showcase-visual cinema-visual">
+          <div class="cinema-card">
+            <div class="showcase-anim-wrap">
+              <img
+                src="img/movie1.jpg"
+                class="anim-img anim-img-1"
+                alt="电影海报 1"
+              />
+              <img
+                src="img/movie2.jpg"
+                class="anim-img anim-img-2"
+                alt="电影海报 2"
+              />
+            </div>
+            <div class="showcase-card-info">
+              <div class="showcase-card-title">光影之间</div>
+              <div class="showcase-card-sub">Stories told through frames</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         MELODY — music page (scoped styles in melody.css)
+         ═══════════════════════════════════════════ -->
+    <section class="melody-page poker-section" id="poker">
+      <div class="melody-layout">
+        <!-- LEFT: Full player console -->
+        <div class="melody-player-panel" id="poker-player">
+          <div class="melody-title-block">
+            <h1>MELODY</h1>
+            <p>点击扑克牌播放音乐 - Click to Play</p>
+          </div>
+
+          <div class="now-playing">
+            <img
+              id="player-mini-cover"
+              class="player-mini-cover"
+              src="img/5.png"
+              alt="Album cover"
+            />
+            <div class="song-meta">
+              <span class="label">Now Playing</span>
+              <h2 id="player-title">最后一页</h2>
+              <p id="player-artist">洛尘鞅</p>
+            </div>
+          </div>
+
+          <div class="progress-area">
+            <div class="time-row">
+              <span id="player-current-time">0:00</span>
+              <span id="player-duration">0:00</span>
+            </div>
+            <input
+              id="player-progress"
+              class="progress-slider"
+              type="range"
+              min="0"
+              max="0"
+              value="0"
+              step="0.1"
+              aria-label="播放进度"
+            />
+          </div>
+
+          <div class="control-row">
+            <button
+              id="player-prev-btn"
+              class="control-btn prev-btn"
+              type="button"
+              aria-label="上一首"
+            ></button>
+            <button
+              id="player-play-btn"
+              class="control-btn play-btn"
+              type="button"
+              aria-label="播放或暂停"
+            ></button>
+            <button
+              id="player-next-btn"
+              class="control-btn next-btn"
+              type="button"
+              aria-label="下一首"
+            ></button>
+          </div>
+
+          <div class="equalizer" id="audio-wave">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+        <!-- /melody-player-panel -->
+
+        <!-- RIGHT: Poker card fan -->
+        <div class="melody-card-stage">
+          <!-- Card 0 — song index 0: 最后一页 -->
+          <div class="poker-card is-active" data-fan="0" data-song-index="0">
+            <img src="img/5.png" alt="最后一页" />
+            <div class="card-play-btn" aria-hidden="true"></div>
+            <div class="card-info">
+              <div class="card-title">最后一页</div>
+              <div class="card-artist">洛尘鞅</div>
+            </div>
+          </div>
+
+          <!-- Card 1 — song index 1: 恶作剧 -->
+          <div class="poker-card" data-fan="1" data-song-index="1">
+            <img src="img/2.png" alt="恶作剧" />
+            <div class="card-play-btn" aria-hidden="true"></div>
+            <div class="card-info">
+              <div class="card-title">恶作剧</div>
+              <div class="card-artist">王蓝茵</div>
+            </div>
+          </div>
+
+          <!-- Card 2 — song index 2: 借我 -->
+          <div class="poker-card" data-fan="2" data-song-index="2">
+            <img src="img/3.png" alt="借我" />
+            <div class="card-play-btn" aria-hidden="true"></div>
+            <div class="card-info">
+              <div class="card-title">借我</div>
+              <div class="card-artist">谢春花</div>
+            </div>
+          </div>
+
+          <!-- Card 3 — song index 3: 情歌 -->
+          <div class="poker-card" data-fan="3" data-song-index="3">
+            <img src="img/4.png" alt="情歌" />
+            <div class="card-play-btn" aria-hidden="true"></div>
+            <div class="card-info">
+              <div class="card-title">情歌</div>
+              <div class="card-artist">张悬</div>
+            </div>
+          </div>
+
+          <!-- Card 4 — song index 4: 孤独患者 -->
+          <div class="poker-card" data-fan="4" data-song-index="4">
+            <img src="img/1.png" alt="孤独患者" />
+            <div class="card-play-btn" aria-hidden="true"></div>
+            <div class="card-info">
+              <div class="card-title">孤独患者</div>
+              <div class="card-artist">陈奕迅</div>
+            </div>
+          </div>
+        </div>
+        <!-- /melody-card-stage -->
+      </div>
+      <!-- /melody-layout -->
+    </section>
+    <!-- /melody-page -->
+
+    <!-- ═══════════════════════════════════════════
+         FOOTER
+         ═══════════════════════════════════════════ -->
+    <footer class="footer-section" id="footer">
+      <div class="footer-divider-line"></div>
+      <div class="footer-content">
+        <div class="footer-heading">
+          <span class="footer-kicker">CONTACT</span>
+          <h2 class="footer-title">联系方式</h2>
+          <p class="footer-tagline">
+            如果你想了解我的学习记录、页面设计或技术实践，可以通过 GitHub 了解我。
+          </p>
+        </div>
+
+        <a
+          class="contact-mail"
+          href="https://github.com/MikeJosion"
+          aria-label="访问 GitHub 账号 MikeJosion"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>GitHub</span>
+          <strong>MikeJosion</strong>
+        </a>
+
+        <a href="#hero" class="footer-back-top" title="回到顶部">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M7.41 15.41 12 10.83l4.59 4.58L18 14l-6-6-6 6z"
+            />
+          </svg>
+          <span>Back to Top</span>
+        </a>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Nova Fliex - All rights reserved</span>
+      </div>
+    </footer>
+
+    <!-- Now-playing toast (global fixed, z-index 9000) -->
+    <div class="poker-now-playing" id="poker-now-playing"></div>
+
+    <!-- Glitch terminal Easter egg -->
+    <div id="glitch-terminal" class="glitch-terminal">
+      <div class="blessing-content">
+        <h2 class="blessing-title">好好学习 天天向上</h2>
+        <p class="blessing-subtitle">
+          May you be happy and safe, always. - Lumi &amp; Kain
+        </p>
+      </div>
+    </div>
+
+    <!-- Fixed dogs decoration -->
+    <div class="fixed-dogs-container" id="fixed-dogs">
+      <div class="dog-wrapper">
+        <div class="dog-name label-charlie">>_ Lumi</div>
+        <svg
+          class="dog-svg dog-charlie"
+          viewBox="0 0 100 50"
+          aria-hidden="true"
+        >
+          <polyline
+            points="10,40 15,30 25,32 40,18 60,18 75,30 90,40"
+            class="dog-line"
+          />
+          <line x1="20" y1="36" x2="25" y2="36" class="dog-eye" />
+        </svg>
+      </div>
+
+      <div class="dog-wrapper">
+        <div class="dog-name label-max">>_ Kain</div>
+        <svg class="dog-svg dog-max" viewBox="0 0 100 50" aria-hidden="true">
+          <polyline
+            points="15,40 20,25 35,28 45,15 70,15 85,32 95,40"
+            class="dog-line"
+          />
+          <line x1="25" y1="32" x2="30" y2="32" class="dog-eye" />
+        </svg>
+      </div>
+    </div>
+
+    <audio
+      id="poker-audio"
+      preload="metadata"
+      referrerpolicy="no-referrer"
+    ></audio>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+    <script src="js/smooth-scroll.js"></script>
+    <script src="js/cursor.js"></script>
+    <script src="js/galaxy-canvas.js?v=real-motion-4"></script>
+    <script src="js/showcase.js"></script>
+    <script src="js/poker.js"></script>
+    <script src="js/dogs.js"></script>
+    <script src="js/hero-anim.js"></script>
+  </body>
+</html>

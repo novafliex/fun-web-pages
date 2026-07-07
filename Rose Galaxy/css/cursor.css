@@ -1,0 +1,84 @@
+/* ============================================
+   MAGNETIC CURSOR (Four-Corner Bracket Style for Hero)
+   首屏专属：当触碰内容时出现的四个角悬停框效果
+   ============================================ */
+
+/* 全局隐藏原生光标（支持鼠标悬停的设备） */
+@media (pointer: fine) {
+  body, a, button, .showcase-card {
+    cursor: none !important;
+  }
+}
+
+/* 主容器 */
+.magnetic-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 99999;
+  mix-blend-mode: difference;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* 常规状态下的跟随圆点 */
+.magnetic-cursor-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  background-color: white;
+  border-radius: 50%;
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 外部四个角的框围合容器 */
+.magnetic-cursor-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  /* 宽高跟随 JS 赋值进行弹性动画过渡 */
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+              height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.2s ease;
+  transform: translate(-50%, -50%);
+}
+
+/* 构成框的四个不连接独立的角落 (形如 ⌜ ⌝ ⌞ ⌟) */
+.cursor-corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 定义这四个角保留哪些边 */
+.cursor-corner-tl { top: 0; left: 0; border-right: none; border-bottom: none; }
+.cursor-corner-tr { top: 0; right: 0; border-left: none; border-bottom: none; }
+.cursor-corner-bl { bottom: 0; left: 0; border-right: none; border-top: none; }
+.cursor-corner-br { bottom: 0; right: 0; border-left: none; border-top: none; }
+
+/* === 悬停/交互状态 === */
+
+.magnetic-cursor.active .magnetic-cursor-dot {
+  opacity: 0; /* 接触吸附物时中心小点消失 */
+  transform: translate(-50%, -50%) scale(0.1);
+}
+
+.magnetic-cursor.active .magnetic-cursor-frame {
+  opacity: 1; /* 显示四边角框 */
+}
+
+/* 为交互元素增加悬停牵拉缓动 */
+.hero-scroll-hint, .hero-title, .hero-subtitle, .showcase-title, .showcase-desc, .showcase-label {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}

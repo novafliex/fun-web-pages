@@ -1,0 +1,19 @@
+/* ============================================
+   AUDIO WAVE VISUALIZER — scoped to .melody-page
+   Prevents these animations leaking to other pages.
+   ============================================ */
+
+/* Equalizer bars are inside .melody-page .equalizer span
+   (styled in melody.css). This file only provides the
+   pulse-wave keyframes used by melody.css. */
+
+@keyframes pulse-wave {
+  0%, 100% {
+    transform: scaleY(0.18);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
