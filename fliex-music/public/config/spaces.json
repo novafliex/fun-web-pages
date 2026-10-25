@@ -1,0 +1,19 @@
+[
+  {
+    "id": "fliex-music",
+    "name": "Fliex Music",
+    "category": "Personal Music Space",
+    "description": "一个沉浸于深空、可自由定制的私人音乐空间。",
+    "linkType": "internal",
+    "tags": ["music", "react"]
+  },
+  {
+    "id": "novafliex-blog",
+    "name": "NovaFliex Blog",
+    "category": "Personal Website",
+    "description": "记录编程、创作、实验与日常想法的个人空间。",
+    "url": "https://novafliex.github.io/",
+    "linkType": "external",
+    "tags": ["blog", "writing"]
+  }
+]

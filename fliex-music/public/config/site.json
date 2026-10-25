@@ -1,0 +1,22 @@
+{
+  "brand": {
+    "name": "Fliex",
+    "sub": "MUSIC",
+    "mottoZh": "记录一些真正值得留下来的东西。",
+    "mottoEn": "A PERSONAL MUSIC SPACE."
+  },
+  "links": {
+    "github": "https://github.com/novafliex/fun-web-pages",
+    "contact": "mailto:hello@example.com",
+    "submit": "https://github.com/novafliex/fun-web-pages/issues"
+  },
+  "giscus": {
+    "repo": "novafliex/fun-web-pages",
+    "repoId": "R_kgDOTQqvAg",
+    "category": "General",
+    "categoryId": "DIC_kwDOTQqvAs4DJkBI",
+    "term": "Fliex Music Guestbook",
+    "strict": "1",
+    "inputPosition": "bottom"
+  }
+}

@@ -1,0 +1,70 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: fliex-music/package-lock.json
+
+      # Pages 子路径由仓库名动态推导，Fork 后无需改动
+      - name: Compute deploy base
+        id: base
+        run: |
+          REPO_NAME="${GITHUB_REPOSITORY#*/}"
+          if [[ "$REPO_NAME" == *.github.io ]]; then
+            echo "base=/" >> "$GITHUB_OUTPUT"
+          else
+            echo "base=/$REPO_NAME/" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build Fliex Music
+        working-directory: fliex-music
+        run: |
+          npm ci
+          npm run build
+        env:
+          DEPLOY_BASE: ${{ steps.base.outputs.base }}
+
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          # 既有静态作品原样复制（不修改其源文件）
+          cp -R "Rose Galaxy" _site/"Rose Galaxy"
+          cp -R "NOVA Music Studio" _site/"NOVA Music Studio"
+          # Fliex Music 使用 Vite 构建产物
+          cp -R fliex-music/dist _site/fliex-music
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

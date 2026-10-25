@@ -1,0 +1,61 @@
+[
+  {
+    "id": "local-f00001",
+    "title": "刻在我心底的名字",
+    "artist": "卢广仲",
+    "album": "刻在我心底的名字",
+    "audio": "music/m1.mp3",
+    "cover": "covers/local-f00001.png",
+    "lyrics": "lyrics/local-f00001.lrc",
+    "duration": 320.17
+  },
+  {
+    "id": "local-f00002",
+    "title": "鱼仔",
+    "artist": "卢广仲",
+    "album": "鱼仔",
+    "audio": "music/m2.mp3",
+    "cover": "covers/local-f00002.jpg",
+    "lyrics": "lyrics/local-f00002.lrc",
+    "duration": 280.95
+  },
+  {
+    "id": "local-f00005",
+    "title": "如果可以",
+    "artist": "韦礼安",
+    "album": "如果可以",
+    "audio": "music/m5.mp3",
+    "cover": "covers/local-f00005.jpg",
+    "lyrics": "lyrics/local-f00005.lrc",
+    "duration": 274.6
+  },
+  {
+    "id": "local-f00013",
+    "title": "安和桥",
+    "artist": "宋冬野",
+    "album": "安和桥北",
+    "audio": "music/m13.mp3",
+    "cover": "covers/local-f00013.png",
+    "lyrics": "lyrics/local-f00013.lrc",
+    "duration": 250.0
+  },
+  {
+    "id": "local-f00015",
+    "title": "轨迹",
+    "artist": "周杰伦",
+    "album": "寻找周杰伦",
+    "audio": "music/m15.mp3",
+    "cover": "covers/local-f00015.png",
+    "lyrics": "lyrics/local-f00015.lrc",
+    "duration": 322.0
+  },
+  {
+    "id": "local-f00000",
+    "title": "River Flows In You",
+    "artist": "Martin Ermen",
+    "album": "Kuschelklassik Piano Dreams, Vol. 2",
+    "audio": "music/m0.mp3",
+    "cover": "covers/local-f00000.jpg",
+    "duration": 198.12
+  }
+]

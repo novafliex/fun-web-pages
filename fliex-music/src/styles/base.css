@@ -1,0 +1,146 @@
+/* ============================================================
+   Fliex Music — base.css
+   设计令牌 / 重置 / 通用控件 / 可访问性
+   色彩：深空黑 × 面板黑 × 银白 × 辅助灰，冷灰蓝仅极少量
+   ============================================================ */
+
+:root {
+  --bg: #080a0d;
+  --panel: #11151a;
+  --ink: #e6e9ed;
+  --ink-2: #8a9099;
+  --line: rgba(235, 238, 243, 0.16);
+  --line-strong: rgba(235, 238, 243, 0.32);
+  --danger: rgba(235, 168, 168, 0.92);
+  --serif: 'Cormorant Garamond', 'Noto Serif SC', 'Songti SC', serif;
+  --sans: 'Inter', 'Noto Sans SC', -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Consolas, monospace;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --lyric-size: 25px;
+}
+
+html[data-lyric-size='s'] { --lyric-size: 20px; }
+html[data-lyric-size='m'] { --lyric-size: 25px; }
+html[data-lyric-size='l'] { --lyric-size: 31px; }
+
+html[data-contrast='high'] {
+  --ink-2: #a8aeb8;
+  --line: rgba(235, 238, 243, 0.24);
+  --line-strong: rgba(235, 238, 243, 0.44);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* 显式 hidden 优先于任何 display 设定 */
+[hidden] { display: none !important; }
+
+html, body { height: 100%; }
+
+html { background: #06070a; }
+
+body {
+  font-family: var(--sans);
+  font-weight: 300;
+  color: var(--ink);
+  background:
+    radial-gradient(130% 100% at 72% 0%, #0c1016 0%, var(--bg) 58%),
+    var(--bg);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root { height: 100dvh; }
+
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+}
+
+::selection { background: rgba(230, 233, 237, 0.22); }
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(235, 238, 243, 0.14); border-radius: 2px; }
+
+:focus-visible {
+  outline: 1px solid rgba(230, 233, 237, 0.6);
+  outline-offset: 2px;
+}
+
+/* ── 通用图标按钮 ─────────────────────────── */
+.icon-btn {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  color: var(--ink-2);
+  font-size: 13px;
+  transition: color 0.2s var(--ease), background 0.2s var(--ease);
+}
+.icon-btn:hover { color: var(--ink); background: rgba(235, 238, 243, 0.05); }
+.icon-btn[aria-pressed='true'] { color: var(--ink); }
+.icon-btn:disabled { opacity: 0.35; cursor: default; }
+.icon-btn:disabled:hover { color: var(--ink-2); background: none; }
+.icon-btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ── 音量滑杆（原生 range 统一样式） ──────── */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 14px;
+  background: transparent;
+  cursor: pointer;
+}
+input[type='range']::-webkit-slider-runnable-track {
+  height: 2px;
+  border-radius: 1px;
+  background: rgba(235, 238, 243, 0.2);
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 9px;
+  height: 9px;
+  margin-top: -3.5px;
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 0 0 6px rgba(230, 233, 237, 0.3);
+}
+input[type='range']::-moz-range-track {
+  height: 2px;
+  border-radius: 1px;
+  background: rgba(235, 238, 243, 0.2);
+}
+input[type='range']::-moz-range-thumb {
+  width: 9px;
+  height: 9px;
+  border: none;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+/* ── 低动态 ───────────────────────────────── */
+html[data-motion='reduced'] *,
+html[data-motion='reduced'] *::before,
+html[data-motion='reduced'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
