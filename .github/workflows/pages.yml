@@ -32,9 +32,9 @@ jobs:
         run: |
           REPO_NAME="${GITHUB_REPOSITORY#*/}"
           if [[ "$REPO_NAME" == *.github.io ]]; then
-            echo "base=/" >> "$GITHUB_OUTPUT"
+            echo "base=/fliex-music/" >> "$GITHUB_OUTPUT"
           else
-            echo "base=/$REPO_NAME/" >> "$GITHUB_OUTPUT"
+            echo "base=/$REPO_NAME/fliex-music/" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Build Fliex Music
@@ -50,7 +50,6 @@ jobs:
           mkdir -p _site
           # 既有静态作品原样复制（不修改其源文件）
           cp -R "Rose Galaxy" _site/"Rose Galaxy"
-          cp -R "NOVA Music Studio" _site/"NOVA Music Studio"
           # Fliex Music 使用 Vite 构建产物
           cp -R fliex-music/dist _site/fliex-music
 
