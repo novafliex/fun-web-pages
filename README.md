@@ -5,7 +5,6 @@
 ## 页面
 
 - [Rose Galaxy](Rose%20Galaxy/index.html)：银河风格的个人展示页，包含动态背景、图片展示和音乐播放器。
-- [NOVA Music Studio](NOVA%20Music%20Studio/index.html)：实验视觉风格的音乐播放器，中央慢旋转"声音天体"装置，右侧歌词面板可展开 / 收起，含曲库搜索、收藏与本地听歌档案（听歌时长统计、导出 / 导入）。
 - [Fliex Music](fliex-music/)：深空线框星球主题的沉浸式私人音乐播放器（React + TypeScript + Vite），漂浮同步歌词、长播放列表、本地收藏与听歌档案。详见 [fliex-music/README.md](fliex-music/README.md)。
 
 ## 预览
