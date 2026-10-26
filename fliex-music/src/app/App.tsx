@@ -63,7 +63,7 @@ function Workspace({ mode, setMode }: { mode: WorkspaceMode; setMode: (m: Worksp
   )
 }
 
-function SidePanel(): React.JSX.Element {
+function SidePanel({ drawerOpen, onClose }: { drawerOpen: boolean; onClose: () => void }): React.JSX.Element {
   const { panel, openPanel } = useUI()
   const [archiveMode, setArchiveMode] = useState<WorkspaceMode>('music')
   const panelRef = useRef<HTMLElement>(null)
@@ -78,8 +78,8 @@ function SidePanel(): React.JSX.Element {
   }, [panel])
 
   return (
-    <aside className="workspace" id="workspace" ref={panelRef} tabIndex={-1} aria-label={panel === 'music' ? '音乐工作区' : panel === 'discover' ? 'Discover 音乐空间' : 'Customize 自定义'}>
-      <button className="workspace-close" onClick={() => openPanel('music')} aria-label="收起面板">✕</button>
+    <aside className={`workspace${drawerOpen ? ' is-open' : ''}`} id="workspace" ref={panelRef} tabIndex={-1} aria-label={panel === 'music' ? '音乐工作区' : panel === 'discover' ? 'Discover 音乐空间' : 'Customize 自定义'}>
+      <button className="workspace-close" onClick={onClose} aria-label="收起面板">✕</button>
       {panel === 'music' && <Workspace mode={archiveMode} setMode={setArchiveMode} />}
       {panel === 'discover' && <DiscoverPanel onClose={() => openPanel('music')} />}
       {panel === 'customize' && <CustomizePanel onClose={() => openPanel('music')} />}
@@ -90,6 +90,8 @@ function SidePanel(): React.JSX.Element {
 function Shell(): React.JSX.Element {
   const [panel, setPanel] = useState<Panel>('music')
   const [immersive, setImmersive] = useState(false)
+  // 手机布局下的工作区抽屉开关；桌面布局始终显示工作区，忽略此状态
+  const [drawerOpen, setDrawerOpen] = useState(false)
   const { preferences } = useApp()
   const navVisible = preferences.navVisible && !immersive
 
@@ -99,8 +101,8 @@ function Shell(): React.JSX.Element {
       const tag = el?.tagName
       if (e.key === 'Escape') {
         setImmersive(false)
+        setDrawerOpen(false)
         if (panel !== 'music') setPanel('music')
-        document.getElementById('workspace')?.classList.remove('is-open')
         return
       }
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'BUTTON' || el?.isContentEditable) return
@@ -117,8 +119,10 @@ function Shell(): React.JSX.Element {
 
   const openPanel = useCallback((next: Panel) => {
     setPanel(next)
-    document.getElementById('workspace')?.classList.add('is-open')
+    setDrawerOpen(true)
   }, [])
+
+  const closeDrawer = useCallback(() => setDrawerOpen(false), [])
 
   useEffect(() => {
     const onImmersive = () => setImmersive(v => !v)
@@ -132,7 +136,12 @@ function Shell(): React.JSX.Element {
       <div className={`app${immersive ? ' is-immersive' : ''}${navVisible ? '' : ' nav-hidden'}`} data-panel={panel}>
         {navVisible && <BrandNav panel={panel} onNavigate={openPanel} />}
         <Stage />
-        {!immersive && <SidePanel />}
+        {!immersive && (
+          <>
+            <div className={`workspace-scrim${drawerOpen ? ' is-open' : ''}`} onClick={closeDrawer} aria-hidden="true" />
+            <SidePanel drawerOpen={drawerOpen} onClose={closeDrawer} />
+          </>
+        )}
         {immersive && (
           <button className="immersive-exit" onClick={() => setImmersive(false)} aria-label="退出沉浸模式">
             ⤢ 退出沉浸 · Esc

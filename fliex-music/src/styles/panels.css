@@ -22,6 +22,17 @@
   min-height: 0;
 }
 .workspace-close { display: none; }
+/* 手机抽屉的舞台遮罩（桌面与平板不渲染显示） */
+.workspace-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 38;
+  display: none;
+  background: rgba(3, 4, 6, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s var(--ease);
+}
 
 /* ── 侧面板（Discover / Customize 共用骨架） ── */
 .side-panel {
@@ -273,6 +284,8 @@
 /* ── 沉浸模式 ─────────────────────────────── */
 .app.is-immersive,
 .app.is-immersive[data-panel] { grid-template-columns: minmax(0, 1fr); }
+/* 沉浸模式下没有可打开的工作区（SidePanel 已卸载），移动端开关一并隐藏 */
+.app.is-immersive .workspace-toggle { display: none; }
 .immersive-exit {
   position: fixed;
   top: 18px;
@@ -992,3 +1005,200 @@ html[data-player-position='center'] .app[data-panel='discover'] .player {
 html[data-nav-visible='false'] .app:not(.is-immersive) { grid-template-columns: minmax(0, 1fr) 372px; }
 html[data-nav-visible='false'] .app:not(.is-immersive)[data-panel='customize'] { grid-template-columns: minmax(0, 1fr) var(--console-w, 408px); }
 html[data-nav-visible='false'] .app:not(.is-immersive)[data-panel='discover'] { grid-template-columns: minmax(0, 1fr) 0px; }
+
+/* ── 响应式：平板（761–1151px）────────────────
+   品牌列收成顶部横栏（终端块/座右铭随品牌列消失），
+   舞台与工作区双列并排，工作区宽度上限 46vw。
+   手机（≤760px）见下一节：单列舞台 + 全高抽屉工作区。 */
+@media (min-width: 761px) and (max-width: 1151px) {
+  .app {
+    grid-template-columns: minmax(0, 1fr) min(372px, 46vw);
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .app[data-panel='customize'] { grid-template-columns: minmax(0, 1fr) min(var(--console-w, 408px), 46vw); }
+  .app[data-panel='discover'] { grid-template-columns: minmax(0, 1fr) 0px; }
+  .app:has(.notes-editor)[data-panel='music'] { grid-template-columns: minmax(0, 1fr) min(620px, 46vw); }
+  /* 顶栏不渲染（沉浸 / Layout 隐藏导航）时舞台独占唯一行，auto 行会塌成 0 高 */
+  .app.is-immersive,
+  html[data-nav-visible='false'] .app:not(.is-immersive) { grid-template-rows: minmax(0, 1fr); }
+  html[data-nav-visible='false'] .app:not(.is-immersive),
+  html[data-nav-visible='false'] .app:not(.is-immersive)[data-panel='discover'] {
+    grid-template-columns: minmax(0, 1fr) min(372px, 46vw);
+  }
+  html[data-nav-visible='false'] .app:not(.is-immersive)[data-panel='customize'] {
+    grid-template-columns: minmax(0, 1fr) min(var(--console-w, 408px), 46vw);
+  }
+
+  .brandnav {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 22px;
+    padding: 12px 22px;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { padding-bottom: 0; border-bottom: none; }
+  .brand-name { font-size: 24px; }
+  .brand-motto-zh,
+  .brand-motto-en,
+  .terminal-block { display: none; }
+  .brand-nav { margin-top: 0; flex-direction: row; gap: 4px; }
+  .nav-item { padding: 8px 13px; border-left: none; border-radius: 8px; }
+  .nav-item.is-active { border-left-color: transparent; background: rgba(235, 238, 243, 0.08); }
+  .brand-foot { margin-top: 0; margin-left: auto; }
+
+  /* Discover 浮层收窄，歌词让位距离同步调整 */
+  .app[data-panel='discover'] .workspace { width: min(60vw, 680px); min-width: 380px; }
+  .app[data-panel='discover'] .lyrics { right: calc(min(60vw, 680px) + 24px); width: min(34%, 380px); }
+}
+
+/* ── 响应式：手机（≤760px）──────────────────── */
+@media (max-width: 760px) {
+  .app,
+  .app[data-panel='customize'],
+  .app[data-panel='discover'],
+  .app:has(.notes-editor)[data-panel='music'],
+  html[data-nav-visible='false'] .app:not(.is-immersive),
+  html[data-nav-visible='false'] .app:not(.is-immersive)[data-panel='customize'],
+  html[data-nav-visible='false'] .app:not(.is-immersive)[data-panel='discover'] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .app { grid-template-rows: auto minmax(0, 1fr); }
+  /* 顶栏不渲染（沉浸 / Layout 隐藏导航）时舞台独占唯一行，auto 行会塌成 0 高 */
+  .app.is-immersive,
+  html[data-nav-visible='false'] .app:not(.is-immersive) { grid-template-rows: minmax(0, 1fr); }
+
+  /* 品牌导航 → 紧凑顶栏：品牌一行 + 导航一行，功能图标绝对定位到右上 */
+  .brandnav {
+    position: relative;
+    grid-column: 1 / -1;
+    flex-direction: column;
+    gap: 0;
+    padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 10px;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { padding-bottom: 0; border-bottom: none; gap: 8px; }
+  .brand-name { font-size: 20px; letter-spacing: 0.12em; }
+  .brand-sub { font-size: 8px; letter-spacing: 0.38em; }
+  .brand-motto-zh,
+  .brand-motto-en,
+  .terminal-block { display: none; }
+  .brand-nav { margin-top: 12px; flex-direction: row; gap: 6px; }
+  .nav-item { flex: 1; padding: 8px 6px; border-left: none; border-radius: 8px; text-align: center; }
+  .nav-item span { font-size: 10px; letter-spacing: 0.12em; }
+  .nav-item small { display: none; }
+  .nav-item.is-active { border-left-color: transparent; background: rgba(235, 238, 243, 0.08); }
+  .brand-foot { position: absolute; top: calc(8px + env(safe-area-inset-top, 0px)); right: 12px; margin-top: 0; }
+  .brand-foot a,
+  .brand-foot button { width: 34px; height: 34px; }
+
+  /* 歌词全宽、字号封顶，避免挤压 */
+  .lyrics {
+    left: 18px;
+    right: 18px;
+    width: auto;
+    top: 12%;
+    height: min(calc(var(--lyric-window, 5) * (min(var(--lyric-size, 25px), 22px) * var(--lyric-lh, 1.7) + 12px)), 42vh);
+  }
+  .lyric-line { font-size: min(var(--lyric-size, 25px), 22px); }
+
+  /* 播放器贴底全宽（覆盖桌面右下定位与位置偏好） */
+  .player,
+  html[data-player-position='center'] .player,
+  html[data-player-position='left'] .player {
+    left: 16px;
+    right: 16px;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    width: auto;
+    transform: none;
+  }
+
+  /* 工作区 → 右侧全高抽屉；Discover 的宽浮层规则在此归一 */
+  .workspace {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    width: min(100%, 440px);
+    border-left: 1px solid rgba(235, 238, 243, 0.2);
+    box-shadow: -30px 0 90px rgba(2, 3, 5, 0.55);
+    transform: translateX(103%);
+    visibility: hidden;
+    transition: transform 0.32s var(--ease), visibility 0s linear 0.32s;
+  }
+  .app[data-panel='discover'] .workspace {
+    width: min(100%, 440px);
+    min-width: 0;
+    z-index: 40;
+    animation: none;
+    transform: translateX(103%);
+    visibility: hidden;
+    transition: transform 0.32s var(--ease), visibility 0s linear 0.32s;
+  }
+  .workspace.is-open,
+  .app[data-panel='discover'] .workspace.is-open {
+    transform: none;
+    visibility: visible;
+    transition: transform 0.32s var(--ease);
+  }
+  .workspace-close {
+    display: grid;
+    place-items: center;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 5;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: rgba(13, 16, 21, 0.7);
+    color: var(--ink-2);
+  }
+  .workspace-close:hover { color: var(--ink); border-color: var(--line-strong); }
+  .workspace-scrim { display: block; }
+  .workspace-scrim.is-open { opacity: 1; pointer-events: auto; }
+  .workspace-toggle { display: block; top: 14px; right: 14px; }
+
+  /* Discover 抽屉打开时舞台被完全遮住，撤掉歌词/播放器的让位偏移 */
+  .app[data-panel='discover'] .lyrics { right: 18px; width: auto; }
+  .app[data-panel='discover'] .player,
+  html[data-player-position='center'] .app[data-panel='discover'] .player {
+    left: 16px;
+    right: 16px;
+    transform: none;
+  }
+
+  /* 触控目标与 iOS 聚焦缩放（输入字号 ≥16px） */
+  .mp-row { grid-template-columns: 24px minmax(0, 1fr) auto 30px; padding: 10px 6px; }
+  .mp-fav,
+  .mp-row .mp-more { width: 30px; height: 30px; }
+  .icon-btn { width: 32px; height: 32px; }
+  .mp-search input,
+  .fm-field input,
+  .fm-search,
+  .note-title-input,
+  .note-content-input,
+  .note-song-select { font-size: 16px; }
+  .note-title-input { font-size: 18px; }
+  .note-content-input,
+  .note-preview { line-height: 1.8; }
+
+  /* 作品卡纵向堆叠；面板内边距收紧 */
+  .work-card { grid-template-columns: 1fr; gap: 12px; }
+  .work-cover { width: 100%; height: 160px; }
+  .side-head { padding: 18px 16px 12px; }
+  .side-tabs { padding: 10px 12px 0; }
+  .side-body { padding: 6px 16px 24px; }
+  .mp-head { padding: 16px 14px 8px; }
+  .mp-search { padding: 0 14px 6px; }
+  .mp-list { padding: 2px 8px 8px; }
+  .fm-dialog { max-height: calc(100dvh - 48px); overflow-y: auto; }
+
+  /* 沉浸模式退出按钮避开刘海 */
+  .immersive-exit { top: calc(12px + env(safe-area-inset-top, 0px)); right: 14px; }
+}
